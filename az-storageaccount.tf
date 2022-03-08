@@ -1,39 +1,24 @@
-terraform {
-  required_providers {
-    azurerm = {
-      source  = "hashicorp/azurerm"
-      version = "~> 2.90"
-    }
-  }
-
-  required_version = "~> 1.1.5"
-}
-
-provider "azurerm" {
-  features {}
-}
-
-resource "azurerm_storage_account" "diag" {
+resource "azurerm_storage_account" "storage" {
   name                      = var.storage_account_name
-  location                  = azurerm_resource_group.compute.location
-  resource_group_name       = azurerm_resource_group.compute.name
+  location                  = var.location
+  resource_group_name       = var.resource_group_name
   account_kind              = "StorageV2"
   account_tier              = "Standard"
-  account_replication_type  = "LRS"
+  account_replication_type  = var.replication_type
   access_tier               = "Hot"
   enable_https_traffic_only = true
   min_tls_version           = "TLS1_2"
-  allow_blob_public_access  = false
-  shared_access_key_enabled = true
+  allow_blob_public_access  = var.allow_public_blob_access
+  shared_access_key_enabled = var.shared_access_key_enabled
 
   blob_properties {
 
     delete_retention_policy {
-      days = 30
+      days = var.delete_retention_policy
     }
 
     container_delete_retention_policy {
-      days = 30
+      days = var.container_delete_retention_policy
     }
   }
 
@@ -43,16 +28,17 @@ resource "azurerm_storage_account" "diag" {
   tags = var.tags
 }
 
-resource "azurerm_storage_account_network_rules" "logging" {
-  storage_account_id         = azurerm_storage_account.diag.id
-  default_action             = "Deny"
-  virtual_network_subnet_ids = [data.azurerm_subnet.network.id]
-  bypass                     = ["Metrics", "Logging", "AzureServices"]
+resource "azurerm_storage_account_network_rules" "rules" {
+  storage_account_id         = azurerm_storage_account.storage.id
+  default_action             = var.network_acl_default_action
+  ip_rules                   = var.ip_rules
+  virtual_network_subnet_ids = var.virtual_network_subnet_ids
+  bypass                     = var.network_acl_bypass
 }
 
 resource "azurerm_monitor_diagnostic_setting" "storage_account_diagnostics" {
   name                       = "security-logging"
-  target_resource_id         = azurerm_storage_account.diag.id
+  target_resource_id         = azurerm_storage_account.storage.id
   log_analytics_workspace_id = data.azurerm_log_analytics_workspace.logs.id
 
   metric {
@@ -72,7 +58,7 @@ locals {
 resource "azurerm_monitor_diagnostic_setting" "storage_account_child_diagnostics" {
   for_each                   = toset(local.storageDiagnostics)
   name                       = "security-logging"
-  target_resource_id         = "${azurerm_storage_account.diag.id}/${each.value}/default/"
+  target_resource_id         = "${azurerm_storage_account.storage.id}/${each.value}/default/"
   log_analytics_workspace_id = data.azurerm_log_analytics_workspace.logs.id
 
   log {
