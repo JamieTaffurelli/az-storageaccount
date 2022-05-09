@@ -1,3 +1,8 @@
+data "azurerm_log_analytics_workspace" "logs" {
+  name                = var.log_analytics_workspace_name
+  resource_group_name = var.log_analytics_workspace_resource_group_name
+}
+
 resource "azurerm_storage_account" "storage" {
   name                      = var.storage_account_name
   location                  = var.location
@@ -8,7 +13,7 @@ resource "azurerm_storage_account" "storage" {
   access_tier               = "Hot"
   enable_https_traffic_only = true
   min_tls_version           = "TLS1_2"
-  allow_blob_public_access  = var.allow_public_blob_access
+  allow_nested_items_to_be_public  = var.allow_public_blob_access
   shared_access_key_enabled = var.shared_access_key_enabled
 
   blob_properties {

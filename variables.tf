@@ -15,11 +15,11 @@ variable "storage_account_name" {
 
 variable "replication_type" {
   type    = string
-  default = "LRS"
+  default = "GRS"
 
   validation {
-    condition     = contains(["LRS", "GRS", "RAGRS", "ZRS", "GZRS", "RAGRS"], image.replication_type)
-    error_message = "replication_type must be LRS, GRS, RAGRS, ZRS, GZRS or RAGRS"
+    condition     = contains(["LRS", "GRS", "RAGRS", "ZRS", "GZRS", "RAGRS"], var.replication_type)
+    error_message = "Variable replication_type must be LRS, GRS, RAGRS, ZRS, GZRS or RAGRS."
   }
   description = "Type of replication for the Storage Account"
 }
@@ -48,18 +48,12 @@ variable "container_delete_retention_policy" {
   description = "Days to keep containers in a soft-delete state"
 }
 
-variable "container_delete_retention_policy" {
-  type        = number
-  default     = 30
-  description = "Days to keep containers in a soft-delete state"
-}
-
 variable "network_acl_bypass" {
-  type    = string
+  type    = list(string)
   default = ["None"]
   validation {
     condition     = contains(["Metrics", "Logging", "AzureServices", "None"], var.network_acl_bypass)
-    error_message = "Bypass must be None or a combination of Metrics, Logging and AzureServices"
+    error_message = "Bypass must be None or a combination of Metrics, Logging and AzureServices."
   }
   description = "Allow trusted Azure, logging and metrics services to bypass network ACLs"
 }
@@ -70,7 +64,7 @@ variable "network_acl_default_action" {
 
   validation {
     condition     = contains(["Allow", "Deny"], var.network_acl_default_action)
-    error_message = "Bypass must be Allow or Deny"
+    error_message = "Bypass must be Allow or Deny."
   }
   description = "Default action to take if no rule match from IPs or subnets"
 }
