@@ -4,17 +4,17 @@ data "azurerm_log_analytics_workspace" "logs" {
 }
 
 resource "azurerm_storage_account" "storage" {
-  name                      = var.storage_account_name
-  location                  = var.location
-  resource_group_name       = var.resource_group_name
-  account_kind              = "StorageV2"
-  account_tier              = "Standard"
-  account_replication_type  = var.replication_type
-  access_tier               = "Hot"
-  enable_https_traffic_only = true
-  min_tls_version           = "TLS1_2"
-  allow_nested_items_to_be_public  = var.allow_public_blob_access
-  shared_access_key_enabled = var.shared_access_key_enabled
+  name                            = var.storage_account_name
+  location                        = var.location
+  resource_group_name             = var.resource_group_name
+  account_kind                    = "StorageV2"
+  account_tier                    = "Standard"
+  account_replication_type        = var.replication_type
+  access_tier                     = "Hot"
+  enable_https_traffic_only       = true
+  min_tls_version                 = "TLS1_2"
+  allow_nested_items_to_be_public = var.allow_public_blob_access
+  shared_access_key_enabled       = var.shared_access_key_enabled
 
   blob_properties {
 
