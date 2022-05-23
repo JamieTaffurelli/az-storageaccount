@@ -28,7 +28,7 @@ output "storage_account_access_tier" {
   description = "Access tier of the Storage Account"
 }
 
-output "storage_account_enable_https_traffic_only " {
+output "storage_account_enable_https_traffic_only" {
   value       = azurerm_storage_account.storage.enable_https_traffic_only
   description = "HTTPS only traffic is enabled for Storage Account"
 }
