@@ -1,15 +1,20 @@
+data "azurerm_log_analytics_workspace" "logs" {
+  name                = var.log_analytics_workspace_name
+  resource_group_name = var.log_analytics_workspace_resource_group_name
+}
+
 resource "azurerm_storage_account" "storage" {
-  name                      = var.storage_account_name
-  location                  = var.location
-  resource_group_name       = var.resource_group_name
-  account_kind              = "StorageV2"
-  account_tier              = "Standard"
-  account_replication_type  = var.replication_type
-  access_tier               = "Hot"
-  enable_https_traffic_only = true
-  min_tls_version           = "TLS1_2"
-  allow_blob_public_access  = var.allow_public_blob_access
-  shared_access_key_enabled = var.shared_access_key_enabled
+  name                            = var.storage_account_name
+  location                        = var.location
+  resource_group_name             = var.resource_group_name
+  account_kind                    = "StorageV2"
+  account_tier                    = "Standard"
+  account_replication_type        = var.replication_type
+  access_tier                     = "Hot"
+  enable_https_traffic_only       = true
+  min_tls_version                 = "TLS1_2"
+  allow_nested_items_to_be_public = var.allow_public_blob_access
+  shared_access_key_enabled       = var.shared_access_key_enabled
 
   blob_properties {
 
@@ -19,6 +24,16 @@ resource "azurerm_storage_account" "storage" {
 
     container_delete_retention_policy {
       days = var.container_delete_retention_policy
+    }
+  }
+
+  queue_properties {
+    logging {
+      delete                = true
+      read                  = true
+      write                 = true
+      version               = "1.0"
+      retention_policy_days = 365
     }
   }
 
