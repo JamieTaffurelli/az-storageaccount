@@ -50,7 +50,7 @@ variable "container_delete_retention_policy" {
 
 variable "network_acl_bypass" {
   type        = list(string)
-  default     = ["None"]
+  default     = ["Logging", "Metrics", "AzureServices"]
   description = "Allow trusted Azure, logging and metrics services to bypass network ACLs"
 }
 

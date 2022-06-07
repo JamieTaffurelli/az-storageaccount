@@ -27,6 +27,16 @@ resource "azurerm_storage_account" "storage" {
     }
   }
 
+  queue_properties {
+    logging {
+      delete                = true
+      read                  = true
+      write                 = true
+      version               = "1.0"
+      retention_policy_days = 365
+    }
+  }
+
   identity {
     type = "SystemAssigned"
   }
