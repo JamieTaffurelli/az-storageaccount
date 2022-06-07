@@ -49,12 +49,8 @@ variable "container_delete_retention_policy" {
 }
 
 variable "network_acl_bypass" {
-  type    = list(string)
-  default = ["None"]
-  validation {
-    condition     = contains(["Metrics", "Logging", "AzureServices", "None"], var.network_acl_bypass)
-    error_message = "Bypass must be None or a combination of Metrics, Logging and AzureServices."
-  }
+  type    = string
+  default = "None"
   description = "Allow trusted Azure, logging and metrics services to bypass network ACLs"
 }
 
