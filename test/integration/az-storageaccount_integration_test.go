@@ -34,5 +34,5 @@ func TestIT_OutputsAreCorrect(t *testing.T) {
 	assert.Equal(t, "Hot", terraform.Output(t, tfOptions, "storage_account_access_tier"), "Storage Account access tier should be correct")
 	assert.Equal(t, "true", terraform.Output(t, tfOptions, "storage_account_enable_https_traffic_only"), "Storage Account https setting should be correct")
 	assert.Equal(t, "TLS1_2", terraform.Output(t, tfOptions, "storage_account_min_tls_version"), "Storage Account TLS setting should be correct")
-	assert.Equal(t, "true", terraform.Output(t, tfOptions, "storage_account_allow_nested_items_to_be_public"), "Storage Account public nested items should be correct")
+	assert.Equal(t, "false", terraform.Output(t, tfOptions, "storage_account_allow_nested_items_to_be_public"), "Storage Account public nested items should be correct")
 }
