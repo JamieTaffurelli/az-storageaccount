@@ -17,7 +17,7 @@ func showTerraformPlanAsJSON(t *testing.T) *gojq.JQ {
 			"resource_group_name":                         "testrg",
 			"location":                                    "francecentral",
 			"storage_account_name":                        "testsajdbfib",
-			"log_analytics_workspace_name":                "logs",
+			"log_analytics_workspace_name":                "sdasdad",
 			"log_analytics_workspace_resource_group_name": "testrg",
 			"tags": map[string]string{},
 		},
