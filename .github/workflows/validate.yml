@@ -24,7 +24,7 @@ jobs:
         terraform_wrapper: false
 
     - name: Terraform tfsec
-      uses: aquasecurity/tfsec-action@v1.0.0
+      uses: aquasecurity/tfsec-action@v1.0.2
 
     - name: Terraform Init
       run: terraform init
